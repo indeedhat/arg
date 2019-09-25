@@ -45,8 +45,8 @@ func TestInflateStringSlice(t *testing.T) {
 	}
 }
 
-func TestInflateInt(t *testing.T) {
-	var s int
+func TestInflateInt8(t *testing.T) {
+	var s int8
 	ex := &expectedArg{
 		ScalarType: reflect.ValueOf(&s).Elem(),
 		Values:     []string{"1"},
@@ -56,12 +56,44 @@ func TestInflateInt(t *testing.T) {
 		t.Errorf("inflateInt generated error: %s", err)
 	}
 
-	if s != int(1) {
-		t.Error("Failed to inflate int")
+	if s != int8(1) {
+		t.Error("Failed to inflate int8")
 	}
 }
 
-func TestInflateIntSlice(t *testing.T) {
+func TestInflateInt8Slice(t *testing.T) {
+	var s []int8
+	ex := &expectedArg{
+		ScalarType: reflect.ValueOf(&s).Elem(),
+		Values:     []string{"1", "2", "3"},
+	}
+
+	if err := ex.inflate(); nil != err {
+		t.Errorf("inflateInt generated error: %s", err)
+	}
+
+	if !reflect.DeepEqual([]int8{1, 2, 3}, s) {
+		t.Error("Failed to inflate int8 slice")
+	}
+}
+
+func TestInflateInt16(t *testing.T) {
+	var s int16
+	ex := &expectedArg{
+		ScalarType: reflect.ValueOf(&s).Elem(),
+		Values:     []string{"1"},
+	}
+
+	if err := ex.inflate(); nil != err {
+		t.Errorf("inflateInt generated error: %s", err)
+	}
+
+	if s != int16(1) {
+		t.Error("Failed to inflate int16")
+	}
+}
+
+func TestInflateInt16Slice(t *testing.T) {
 	var s []int16
 	ex := &expectedArg{
 		ScalarType: reflect.ValueOf(&s).Elem(),
@@ -73,12 +105,12 @@ func TestInflateIntSlice(t *testing.T) {
 	}
 
 	if !reflect.DeepEqual([]int16{1, 2, 3}, s) {
-		t.Error("Failed to inflate int slice")
+		t.Error("Failed to inflate int16 slice")
 	}
 }
 
-func TestInflateUint(t *testing.T) {
-	var s uint
+func TestInflateInt32(t *testing.T) {
+	var s int32
 	ex := &expectedArg{
 		ScalarType: reflect.ValueOf(&s).Elem(),
 		Values:     []string{"1"},
@@ -88,13 +120,13 @@ func TestInflateUint(t *testing.T) {
 		t.Errorf("inflateInt generated error: %s", err)
 	}
 
-	if s != uint(1) {
-		t.Error("Failed to inflate uint")
+	if s != int32(1) {
+		t.Error("Failed to inflate int32")
 	}
 }
 
-func TestInflateUintSlice(t *testing.T) {
-	var s []uint8
+func TestInflateInt32Slice(t *testing.T) {
+	var s []int32
 	ex := &expectedArg{
 		ScalarType: reflect.ValueOf(&s).Elem(),
 		Values:     []string{"1", "2", "3"},
@@ -104,12 +136,172 @@ func TestInflateUintSlice(t *testing.T) {
 		t.Errorf("inflateInt generated error: %s", err)
 	}
 
+	if !reflect.DeepEqual([]int32{1, 2, 3}, s) {
+		t.Error("Failed to inflate int32 slice")
+	}
+}
+
+func TestInflateInt64(t *testing.T) {
+	var s int64
+	ex := &expectedArg{
+		ScalarType: reflect.ValueOf(&s).Elem(),
+		Values:     []string{"1"},
+	}
+
+	if err := ex.inflate(); nil != err {
+		t.Errorf("inflateInt generated error: %s", err)
+	}
+
+	if s != int64(1) {
+		t.Error("Failed to inflate int64")
+	}
+}
+
+func TestInflateInt64Slice(t *testing.T) {
+	var s []int64
+	ex := &expectedArg{
+		ScalarType: reflect.ValueOf(&s).Elem(),
+		Values:     []string{"1", "2", "3"},
+	}
+
+	if err := ex.inflate(); nil != err {
+		t.Errorf("inflateInt generated error: %s", err)
+	}
+
+	if !reflect.DeepEqual([]int64{1, 2, 3}, s) {
+		t.Error("Failed to inflate int64 slice")
+	}
+}
+
+func TestInflateUint8(t *testing.T) {
+	var s uint8
+	ex := &expectedArg{
+		ScalarType: reflect.ValueOf(&s).Elem(),
+		Values:     []string{"1"},
+	}
+
+	if err := ex.inflate(); nil != err {
+		t.Errorf("inflateUint generated error: %s", err)
+	}
+
+	if s != uint8(1) {
+		t.Error("Failed to inflate uint8")
+	}
+}
+
+func TestInflateUint8Slice(t *testing.T) {
+	var s []uint8
+	ex := &expectedArg{
+		ScalarType: reflect.ValueOf(&s).Elem(),
+		Values:     []string{"1", "2", "3"},
+	}
+
+	if err := ex.inflate(); nil != err {
+		t.Errorf("inflateUint generated error: %s", err)
+	}
+
 	if !reflect.DeepEqual([]uint8{1, 2, 3}, s) {
 		t.Error("Failed to inflate uint8 slice")
 	}
 }
 
-func TestInflateFloat(t *testing.T) {
+func TestInflateUint16(t *testing.T) {
+	var s uint16
+	ex := &expectedArg{
+		ScalarType: reflect.ValueOf(&s).Elem(),
+		Values:     []string{"1"},
+	}
+
+	if err := ex.inflate(); nil != err {
+		t.Errorf("inflateUint generated error: %s", err)
+	}
+
+	if s != uint16(1) {
+		t.Error("Failed to inflate uint16")
+	}
+}
+
+func TestInflateUint16Slice(t *testing.T) {
+	var s []uint16
+	ex := &expectedArg{
+		ScalarType: reflect.ValueOf(&s).Elem(),
+		Values:     []string{"1", "2", "3"},
+	}
+
+	if err := ex.inflate(); nil != err {
+		t.Errorf("inflateUint generated error: %s", err)
+	}
+
+	if !reflect.DeepEqual([]uint16{1, 2, 3}, s) {
+		t.Error("Failed to inflate uint16 slice")
+	}
+}
+
+func TestInflateUint32(t *testing.T) {
+	var s uint32
+	ex := &expectedArg{
+		ScalarType: reflect.ValueOf(&s).Elem(),
+		Values:     []string{"1"},
+	}
+
+	if err := ex.inflate(); nil != err {
+		t.Errorf("inflateUint generated error: %s", err)
+	}
+
+	if s != uint32(1) {
+		t.Error("Failed to inflate uint32")
+	}
+}
+
+func TestInflateUint32Slice(t *testing.T) {
+	var s []uint32
+	ex := &expectedArg{
+		ScalarType: reflect.ValueOf(&s).Elem(),
+		Values:     []string{"1", "2", "3"},
+	}
+
+	if err := ex.inflate(); nil != err {
+		t.Errorf("inflateUint generated error: %s", err)
+	}
+
+	if !reflect.DeepEqual([]uint32{1, 2, 3}, s) {
+		t.Error("Failed to inflate uint32 slice")
+	}
+}
+
+func TestInflateUint64(t *testing.T) {
+	var s uint64
+	ex := &expectedArg{
+		ScalarType: reflect.ValueOf(&s).Elem(),
+		Values:     []string{"1"},
+	}
+
+	if err := ex.inflate(); nil != err {
+		t.Errorf("inflateUint generated error: %s", err)
+	}
+
+	if s != uint64(1) {
+		t.Error("Failed to inflate uint64")
+	}
+}
+
+func TestInflateUint64Slice(t *testing.T) {
+	var s []uint64
+	ex := &expectedArg{
+		ScalarType: reflect.ValueOf(&s).Elem(),
+		Values:     []string{"1", "2", "3"},
+	}
+
+	if err := ex.inflate(); nil != err {
+		t.Errorf("inflateUint generated error: %s", err)
+	}
+
+	if !reflect.DeepEqual([]uint64{1, 2, 3}, s) {
+		t.Error("Failed to inflate uint64 slice")
+	}
+}
+
+func TestInflateFloat32(t *testing.T) {
 	var s float32
 	ex := &expectedArg{
 		ScalarType: reflect.ValueOf(&s).Elem(),
@@ -121,11 +313,43 @@ func TestInflateFloat(t *testing.T) {
 	}
 
 	if s != float32(1.1) {
-		t.Error("Failed to inflate float")
+		t.Error("Failed to inflate float32")
 	}
 }
 
-func TestInflateFloatSlice(t *testing.T) {
+func TestInflateFloat32Slice(t *testing.T) {
+	var s []float32
+	ex := &expectedArg{
+		ScalarType: reflect.ValueOf(&s).Elem(),
+		Values:     []string{"1.1", "2.2", "3.3"},
+	}
+
+	if err := ex.inflate(); nil != err {
+		t.Errorf("inflateFloat generated error: %s", err)
+	}
+
+	if !reflect.DeepEqual([]float32{1.1, 2.2, 3.3}, s) {
+		t.Error("Failed to inflate float32 slice")
+	}
+}
+
+func TestInflateFloat64(t *testing.T) {
+	var s float64
+	ex := &expectedArg{
+		ScalarType: reflect.ValueOf(&s).Elem(),
+		Values:     []string{"1.1"},
+	}
+
+	if err := ex.inflate(); nil != err {
+		t.Errorf("inflateFloat generated error: %s", err)
+	}
+
+	if s != float64(1.1) {
+		t.Error("Failed to inflate float64")
+	}
+}
+
+func TestInflateFloat64Slice(t *testing.T) {
 	var s []float64
 	ex := &expectedArg{
 		ScalarType: reflect.ValueOf(&s).Elem(),
@@ -137,7 +361,7 @@ func TestInflateFloatSlice(t *testing.T) {
 	}
 
 	if !reflect.DeepEqual([]float64{1.1, 2.2, 3.3}, s) {
-		t.Error("Failed to inflate float slice")
+		t.Error("Failed to inflate float64 slice")
 	}
 }
 
