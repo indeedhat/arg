@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"reflect"
 	"strconv"
+	"strings"
 )
 
 type Argument struct {
@@ -26,6 +27,7 @@ type expectedArg struct {
 	Default  []string
 	Required bool
 	Override bool
+	Validate ValidatorFunc
 }
 
 func (e *expectedArg) inflate() error {
@@ -46,6 +48,17 @@ func (e *expectedArg) inflate() error {
 	}
 
 	return err
+}
+
+func newExpectedArg(keys string, config *ArgConfig) expectedArg {
+	return expectedArg{
+		Keys:     strings.Split(keys, ","),
+		Default:  config.Default,
+		Override: config.Override,
+		Required: config.Required,
+		Usage:    config.Usage,
+		Validate: config.Validate,
+	}
 }
 
 func inflateString(arg *expectedArg) error {

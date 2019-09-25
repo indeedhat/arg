@@ -6,8 +6,15 @@ type Parser struct {
 	Usage   string
 
 	RawArgs []string
+
+	expected []expectedArg
+	extras   []Argument
 }
 
 func NewParser() *Parser {
 	return &Parser{}
+}
+
+func (p *Parser) parse(args []string) error {
+	return nil
 }

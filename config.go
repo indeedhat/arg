@@ -3,7 +3,7 @@ package arg
 type ValidatorFunc func(arg string) error
 
 type ArgConfig struct {
-	Default  interface{}
+	Default  []string
 	Required bool
 	Override bool
 	Usage    string
