@@ -1,4 +1,8 @@
-# expecting
+# arg
+argument parsing lib
+
+Note: this is a work in progress and is not yet operational
+## Api
 
 ```go
 import (
