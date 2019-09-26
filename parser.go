@@ -102,7 +102,34 @@ func (p *Parser) parseDashed() error {
 	arg.Values = append(arg.Values, p.tryFindValue(reflect.Bool == kind(arg.ScalarType)))
 	return nil
 }
+
 func (p *Parser) parseGroup() error {
+	// get the iterator to a standard state before the group bullshittery
+	p.itr.Split(1)
+	p.itr.Next()
+
+	group := p.itr.Value()
+
+	for i := 0; i < len(group); i++ {
+		key := string(group[i])
+		p.itr.Split(1)
+
+		arg := p.findNamed(key)
+		if nil == arg {
+			p.addUnexpectedArg(T_DASHED)
+
+			if strings.EqualFold(p.itr.Value(), "true") || strings.EqualFold(p.itr.Value(), "false") {
+				break
+			}
+		} else {
+			arg.Values = append(arg.Values, p.tryFindValue(reflect.Bool == kind(arg.ScalarType)))
+
+			if p.itr.Value() == arg.Values[len(arg.Values)-1] {
+				break
+			}
+		}
+	}
+
 	return nil
 }
 
@@ -114,6 +141,9 @@ func (p *Parser) addUnexpectedArg(atype ArgType) {
 	if T_POSITIONAL == atype {
 		extra.Positon = p.position
 		extra.Value = p.itr.Value()
+	} else if T_DASHED == atype {
+		extra.Key = p.itr.Value()
+		extra.Value = p.tryFindValue(true)
 	} else {
 		extra.Key = p.itr.Value()
 		extra.Value = p.tryFindValue(false)
