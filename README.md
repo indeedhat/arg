@@ -4,10 +4,10 @@ argument parsing lib
 Note: this is a work in progress and is not yet operational
 
 ## TODO
-- [] need a better way of handling =\
+- [ ] need a better way of handling =\
   unexpected args dont respect it for dashed and groups
-- [] remove preceeding - and -- from unexpected args
-- [] group parsing is basically fucked
+- [x] remove preceeding - and -- from unexpected args
+- [x] group parsing is basically fucked
 
 ## Api
 

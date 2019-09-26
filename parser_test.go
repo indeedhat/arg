@@ -1,8 +1,6 @@
 package arg
 
 import (
-	"encoding/json"
-	"fmt"
 	"reflect"
 	"testing"
 )
@@ -18,11 +16,4 @@ func TestParserTracksRawArgs(t *testing.T) {
 	if !reflect.DeepEqual(test, p.RawArgs) {
 		t.Error("Did not keep track of raw args")
 	}
-
-	b, err := json.Marshal(p.extras)
-	if nil != err {
-		t.Error(err)
-	}
-
-	fmt.Println(string(b))
 }

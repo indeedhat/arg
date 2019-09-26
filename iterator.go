@@ -51,17 +51,13 @@ func (itr *stringIterator) Split(offset int) error {
 	}
 
 	currentVal := itr.Value()
-	if len(currentVal)-1 <= offset {
-		return errors.New("offset cannot be greater than len(value) -2")
+	if len(currentVal) <= offset {
+		return errors.New("offset cannot be greater than len(value) -1")
 	}
 
-	// TODO: do this in a less stupid way when im less tired
-	tmp := itr.data[:itr.current]
-	tmp = append(tmp, currentVal[:offset])
-	tmp = append(tmp, currentVal[offset:])
-	tmp = append(tmp, itr.data[itr.current+1:]...)
-
-	itr.data = tmp
+	splits := []string{currentVal[:offset], currentVal[offset:]}
+	tmp := append(splits, itr.data[itr.current+1:]...)
+	itr.data = append(itr.data[:itr.current], tmp...)
 
 	return nil
 }

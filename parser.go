@@ -106,13 +106,17 @@ func (p *Parser) parseDashed() error {
 func (p *Parser) parseGroup() error {
 	// get the iterator to a standard state before the group bullshittery
 	p.itr.Split(1)
-	p.itr.Next()
 
-	group := p.itr.Value()
+	group, ok := p.itr.Peek()
+	if !ok {
+		return fmt.Errorf("Something went wrong with group parsing")
+	}
 
 	for i := 0; i < len(group); i++ {
-		key := string(group[i])
+		p.itr.Next()
 		p.itr.Split(1)
+
+		key := string(group[i])
 
 		arg := p.findNamed(key)
 		if nil == arg {

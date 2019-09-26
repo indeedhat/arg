@@ -49,7 +49,7 @@ func TestStringIterator(t *testing.T) {
 }
 
 func TestStringIteratorSplit(t *testing.T) {
-	itr := newStringIterator([]string{"1234567890"})
+	itr := newStringIterator([]string{"1234567890", "0987654321"})
 
 	if err := itr.Split(3); nil == err {
 		t.Error("Split should return an error if called before Next")
@@ -60,15 +60,15 @@ func TestStringIteratorSplit(t *testing.T) {
 		t.Error("Split should return an error if the offset is < 1")
 	}
 
-	if err := itr.Split(9); nil == err {
-		t.Error("Split should return an error if the offset is > len(data) -2")
+	if err := itr.Split(10); nil == err {
+		t.Error("Split should return an error if the offset is > len(data) -1")
 	}
 
 	if err := itr.Split(3); nil != err {
 		t.Errorf("Split returned error: '%s' on a valid offset", err)
 	}
 
-	if 2 != len(itr.data) {
+	if 3 != len(itr.data) {
 		t.Error("invalid data entry count after split")
 	}
 
