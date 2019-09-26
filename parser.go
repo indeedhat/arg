@@ -13,8 +13,8 @@ type Parser struct {
 	Usage   string
 
 	// args to be parsed
-	RawArgs    []string
-	normalised stringIterator
+	RawArgs []string
+	itr     stringIterator
 
 	// parsed args
 	positional []expectedArg
@@ -33,11 +33,11 @@ func (p *Parser) parse(args []string) error {
 	// setup the parser state
 	p.RawArgs = args
 
-	p.normalised = newStringIterator(normalise(args))
+	p.itr = newStringIterator(normalise(args))
 
 	// do the parsing
-	for p.normalised.Next() {
-		switch argType(p.normalised.Value()) {
+	for p.itr.Next() {
+		switch argType(p.itr.Value()) {
 		case T_POSITIONAL:
 			if err := p.parsePositional(); nil != err {
 				return err
@@ -73,12 +73,12 @@ func (p *Parser) parsePositional() error {
 		return nil
 	}
 
-	arg.Values = append(arg.Values, p.normalised.Value())
+	arg.Values = append(arg.Values, p.itr.Value())
 	return nil
 }
 
 func (p *Parser) parseNamed() error {
-	key := p.normalised.Value()[2:]
+	key := p.itr.Value()[2:]
 	arg := p.findNamed(key)
 
 	if nil == arg {
@@ -91,7 +91,7 @@ func (p *Parser) parseNamed() error {
 }
 
 func (p *Parser) parseDashed() error {
-	key := p.normalised.Value()[1:]
+	key := p.itr.Value()[1:]
 	arg := p.findNamed(key)
 
 	if nil == arg {
@@ -113,9 +113,9 @@ func (p *Parser) addUnexpectedArg(atype ArgType) {
 
 	if T_POSITIONAL == atype {
 		extra.Positon = p.position
-		extra.Value = p.normalised.Value()
+		extra.Value = p.itr.Value()
 	} else {
-		extra.Key = p.normalised.Value()
+		extra.Key = p.itr.Value()
 		extra.Value = p.tryFindValue(false)
 	}
 
@@ -123,14 +123,14 @@ func (p *Parser) addUnexpectedArg(atype ArgType) {
 }
 
 func (p *Parser) tryFindValue(isBool bool) string {
-	next, ok := p.normalised.Peek()
+	next, ok := p.itr.Peek()
 	if !ok {
 		return "true"
 	}
 
 	if T_POSITIONAL == argType(next) {
 		if !isBool || strings.EqualFold(next, "true") || strings.EqualFold(next, "false") {
-			p.normalised.Next()
+			p.itr.Next()
 			return next
 		}
 	}
