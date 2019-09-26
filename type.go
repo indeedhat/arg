@@ -10,6 +10,7 @@ const (
 	T_POSITIONAL ArgType = iota
 	T_DASHED
 	T_NAMED
+	T_GROUP
 )
 
 func argType(arg string) ArgType {
@@ -18,6 +19,10 @@ func argType(arg string) ArgType {
 	}
 
 	if strings.HasPrefix(arg, "-") && 1 < len(arg) && '-' != arg[1] {
+		if 2 < len(arg) {
+			return T_GROUP
+		}
+
 		return T_DASHED
 	}
 

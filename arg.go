@@ -5,13 +5,18 @@ import (
 	"fmt"
 	"reflect"
 	"strconv"
-	"strings"
 )
 
 type Argument struct {
+	// common fields
 	Type  ArgType
-	Key   string
 	Value string
+
+	// named only fields
+	Key string
+
+	// indexed only fields
+	Positon int
 }
 
 type expectedArg struct {
@@ -48,17 +53,6 @@ func (e *expectedArg) inflate() error {
 	}
 
 	return err
-}
-
-func newExpectedArg(keys string, config *ArgConfig) expectedArg {
-	return expectedArg{
-		Keys:     strings.Split(keys, ","),
-		Default:  config.Default,
-		Override: config.Override,
-		Required: config.Required,
-		Usage:    config.Usage,
-		Validate: config.Validate,
-	}
 }
 
 func inflateString(arg *expectedArg) error {

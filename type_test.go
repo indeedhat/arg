@@ -8,14 +8,25 @@ func TestArgTypeDashed(t *testing.T) {
 	tests := []string{
 		"-e",
 		"-1",
+	}
+
+	for _, arg := range tests {
+		if T_DASHED != argType(arg) {
+			t.Errorf("failed to parse %s as dashed arg", arg)
+		}
+	}
+}
+
+func TestArgTypeGroup(t *testing.T) {
+	tests := []string{
 		"-djgd",
 		"-t=3",
 		"-dgef=3dw-d",
 	}
 
 	for _, arg := range tests {
-		if T_DASHED != argType(arg) {
-			t.Errorf("failed to parse %s as dashed arg", arg)
+		if T_GROUP != argType(arg) {
+			t.Errorf("failed to parse %s as a dash group", arg)
 		}
 	}
 }
