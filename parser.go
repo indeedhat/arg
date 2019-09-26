@@ -142,10 +142,10 @@ func (p *Parser) addUnexpectedArg(atype ArgType) {
 		extra.Positon = p.position
 		extra.Value = p.itr.Value()
 	} else if T_DASHED == atype {
-		extra.Key = p.itr.Value()
+		extra.Key = trimKey(p.itr.Value())
 		extra.Value = p.tryFindValue(true)
 	} else {
-		extra.Key = p.itr.Value()
+		extra.Key = trimKey(p.itr.Value())
 		extra.Value = p.tryFindValue(false)
 	}
 
@@ -268,4 +268,8 @@ func (p *Parser) inflateExpectedArgs() error {
 	}
 
 	return nil
+}
+
+func trimKey(key string) string {
+	return strings.TrimPrefix(strings.TrimPrefix(key, "--"), "-")
 }
