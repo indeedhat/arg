@@ -145,6 +145,7 @@ func (p *Parser) addUnexpectedArg(atype ArgType) {
 	if T_POSITIONAL == atype {
 		extra.Positon = p.position
 		extra.Value = p.itr.Value()
+		p.position++
 	} else if T_DASHED == atype {
 		extra.Key = trimKey(p.itr.Value())
 		extra.Value = p.tryFindValue(true)
