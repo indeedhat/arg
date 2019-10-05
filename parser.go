@@ -17,9 +17,9 @@ type Parser struct {
 	itr     stringIterator
 
 	// parsed args
-	positional []expectedArg
-	named      []expectedArg
-	extras     []Argument
+	positional []*expectedArg
+	named      []*expectedArg
+	extras     []*Argument
 
 	// cursor related gubbins
 	position int
@@ -138,7 +138,7 @@ func (p *Parser) parseGroup() error {
 }
 
 func (p *Parser) addUnexpectedArg(atype ArgType) {
-	extra := Argument{
+	extra := &Argument{
 		Type: atype,
 	}
 
@@ -174,7 +174,7 @@ func (p *Parser) tryFindValue(isBool bool) string {
 }
 
 func (p *Parser) addExpectedArg(keys string, config *ArgConfig) *expectedArg {
-	expected := expectedArg{
+	expected := &expectedArg{
 		Keys:     strings.Split(keys, ","),
 		Default:  config.Default,
 		Override: config.Override,
@@ -189,13 +189,17 @@ func (p *Parser) addExpectedArg(keys string, config *ArgConfig) *expectedArg {
 		p.named = append(p.named, expected)
 	}
 
-	return &expected
+	return expected
 }
 
 func (p *Parser) findPositional() *expectedArg {
 	if p.position < len(p.positional) {
-		p.position++
-		return &p.positional[p.position-1]
+		if !isSlice(p.positional[p.position].ScalarType) {
+			p.position++
+			return p.positional[p.position-1]
+		}
+
+		return p.positional[p.position]
 	}
 
 	return nil
@@ -205,7 +209,7 @@ func (p *Parser) findNamed(key string) *expectedArg {
 	for _, arg := range p.named {
 		for _, k := range arg.Keys {
 			if k == key {
-				return &arg
+				return arg
 			}
 		}
 	}
@@ -228,6 +232,7 @@ func (p *Parser) fillDefaults() {
 }
 
 func (p *Parser) inflateExpectedArgs() error {
+
 	for i, arg := range p.positional {
 		if arg.Required && 0 == len(arg.Values) {
 			return fmt.Errorf("Required positional argument missing at position %d", i)

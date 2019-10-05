@@ -20,7 +20,7 @@ func TestParserTracksRawArgs(t *testing.T) {
 }
 
 func TestParserExtras(t *testing.T) {
-	expected := []Argument{
+	expected := []*Argument{
 		{T_NAMED, "thing1", "thing1", 0},
 		{T_DASHED, "true", "t", 0},
 		{T_POSITIONAL, "thing2", "", 0},
