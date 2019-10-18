@@ -23,6 +23,15 @@ func TestSliceEqualsInvalid(t *testing.T) {
 	}
 }
 
+func TestSliceEqualsDifferentLengths(t *testing.T) {
+	a1 := []string{"one", "two", "three"}
+	a2 := []string{"one", "two"}
+
+	if sliceEqual(a1, a2) {
+		t.Error("Reported different slices as equal")
+	}
+}
+
 func TestIsSlice(t *testing.T) {
 	var i int
 	val := reflect.ValueOf(i)

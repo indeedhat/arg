@@ -3,9 +3,10 @@ package arg
 type ValidatorFunc func(arg string) error
 
 type ArgConfig struct {
-	Default  []string
-	Required bool
-	Override bool
-	Usage    string
-	Validate ValidatorFunc
+	Default   []string
+	Usage     string
+	Required  bool
+	Override  bool
+	IsCommand bool
+	Validate  ValidatorFunc
 }

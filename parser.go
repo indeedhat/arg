@@ -39,19 +39,13 @@ func (p *Parser) parse(args []string) error {
 	for p.itr.Next() {
 		switch argType(p.itr.Value()) {
 		case T_POSITIONAL:
-			if err := p.parsePositional(); nil != err {
-				return err
-			}
+			p.parsePositional()
 
 		case T_NAMED:
-			if err := p.parseNamed(); nil != err {
-				return err
-			}
+			p.parseNamed()
 
 		case T_DASHED:
-			if err := p.parseDashed(); nil != err {
-				return err
-			}
+			p.parseDashed()
 
 		case T_GROUP:
 			if err := p.parseGroup(); nil != err {
@@ -66,41 +60,38 @@ func (p *Parser) parse(args []string) error {
 	return p.inflateExpectedArgs()
 }
 
-func (p *Parser) parsePositional() error {
+func (p *Parser) parsePositional() {
 	arg := p.findPositional()
 	if nil == arg {
 		p.addUnexpectedArg(T_POSITIONAL)
-		return nil
+		return
 	}
 
 	arg.Values = append(arg.Values, p.itr.Value())
-	return nil
 }
 
-func (p *Parser) parseNamed() error {
+func (p *Parser) parseNamed() {
 	key := p.itr.Value()[2:]
 	arg := p.findNamed(key)
 
 	if nil == arg {
 		p.addUnexpectedArg(T_NAMED)
-		return nil
+		return
 	}
 
 	arg.Values = append(arg.Values, p.tryFindValue(reflect.Bool == kind(arg.ScalarType)))
-	return nil
 }
 
-func (p *Parser) parseDashed() error {
+func (p *Parser) parseDashed() {
 	key := p.itr.Value()[1:]
 	arg := p.findNamed(key)
 
 	if nil == arg {
 		p.addUnexpectedArg(T_DASHED)
-		return nil
+		return
 	}
 
 	arg.Values = append(arg.Values, p.tryFindValue(reflect.Bool == kind(arg.ScalarType)))
-	return nil
 }
 
 func (p *Parser) parseGroup() error {

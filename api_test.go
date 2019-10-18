@@ -203,6 +203,45 @@ func TestApiInt8Slice(t *testing.T) {
 	}
 }
 
+func TestApiBadInt8Slice(t *testing.T) {
+	args := []string{
+		"1",
+		"--key=666",
+		"12",
+		"--key=94",
+	}
+
+	iExpected := []int8{
+		1,
+		12,
+	}
+
+	nExpected := []int8{
+		127,
+		94,
+	}
+
+	var indexed []int8
+	var named []int8
+
+	parser := NewParser()
+
+	parser.Int8s(&indexed, "", &ArgConfig{})
+	parser.Int8s(&named, "key", &ArgConfig{})
+
+	if err := parser.Parse(args); nil != err {
+		t.Fatal(err)
+	}
+
+	if !reflect.DeepEqual(iExpected, indexed) {
+		t.Fatalf("failed to set indexed []int8: %v", indexed)
+	}
+
+	if !reflect.DeepEqual(nExpected, named) {
+		t.Fatalf("failed to set indexed []int8: %v", named)
+	}
+}
+
 func TestApiInt16(t *testing.T) {
 	args := []string{
 		"244",
@@ -486,7 +525,7 @@ func TestApiUint8(t *testing.T) {
 	}
 
 	if 120 != indexed {
-		t.Fatalf("failed to set indexed uint8")
+		t.Fatalf("failed to set indexed uint8 %d", indexed)
 	}
 
 	if 19 != named {

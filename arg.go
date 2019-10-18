@@ -83,13 +83,25 @@ func inflateInt(arg *expectedArg) error {
 			err = inflateInt8slice(arg)
 		}
 	} else {
-		i, err = strconv.ParseInt(arg.Values[len(arg.Values)-1], 10, 64)
+		switch kind(arg.ScalarType) {
+		case reflect.Int:
+			i, err = strconv.ParseInt(arg.Values[len(arg.Values)-1], 10, 64)
+		case reflect.Int32:
+			i, err = strconv.ParseInt(arg.Values[len(arg.Values)-1], 10, 32)
+		case reflect.Int64:
+			i, err = strconv.ParseInt(arg.Values[len(arg.Values)-1], 10, 64)
+		case reflect.Int16:
+			i, err = strconv.ParseInt(arg.Values[len(arg.Values)-1], 10, 16)
+		case reflect.Int8:
+			i, err = strconv.ParseInt(arg.Values[len(arg.Values)-1], 10, 8)
+		}
+
 		if err == nil {
 			arg.ScalarType.SetInt(i)
 		}
 	}
 
-	return generateError(err, arg, "int")
+	return generateError(err, arg, kind(arg.ScalarType).String())
 }
 
 func inflateIntslice(arg *expectedArg) error {
@@ -99,14 +111,14 @@ func inflateIntslice(arg *expectedArg) error {
 
 	for _, v := range arg.Values {
 		if i, err = strconv.ParseInt(v, 10, 64); nil != err {
-			break
+			return err
 		}
 
 		newvals = append(newvals, int(i))
 	}
 
 	arg.ScalarType.Set(reflect.AppendSlice(arg.ScalarType, reflect.ValueOf(newvals)))
-	return err
+	return nil
 }
 
 func inflateInt64slice(arg *expectedArg) error {
@@ -116,14 +128,14 @@ func inflateInt64slice(arg *expectedArg) error {
 
 	for _, v := range arg.Values {
 		if i, err = strconv.ParseInt(v, 10, 64); nil != err {
-			break
+			return err
 		}
 
 		newvals = append(newvals, int64(i))
 	}
 
 	arg.ScalarType.Set(reflect.AppendSlice(arg.ScalarType, reflect.ValueOf(newvals)))
-	return err
+	return nil
 }
 
 func inflateInt32slice(arg *expectedArg) error {
@@ -133,14 +145,14 @@ func inflateInt32slice(arg *expectedArg) error {
 
 	for _, v := range arg.Values {
 		if i, err = strconv.ParseInt(v, 10, 32); nil != err {
-			break
+			return err
 		}
 
 		newvals = append(newvals, int32(i))
 	}
 
 	arg.ScalarType.Set(reflect.AppendSlice(arg.ScalarType, reflect.ValueOf(newvals)))
-	return err
+	return nil
 }
 
 func inflateInt16slice(arg *expectedArg) error {
@@ -150,14 +162,14 @@ func inflateInt16slice(arg *expectedArg) error {
 
 	for _, v := range arg.Values {
 		if i, err = strconv.ParseInt(v, 10, 16); nil != err {
-			break
+			return err
 		}
 
 		newvals = append(newvals, int16(i))
 	}
 
 	arg.ScalarType.Set(reflect.AppendSlice(arg.ScalarType, reflect.ValueOf(newvals)))
-	return err
+	return nil
 }
 
 func inflateInt8slice(arg *expectedArg) error {
@@ -167,14 +179,14 @@ func inflateInt8slice(arg *expectedArg) error {
 
 	for _, v := range arg.Values {
 		if i, err = strconv.ParseInt(v, 10, 8); nil != err {
-			break
+			return err
 		}
 
 		newvals = append(newvals, int8(i))
 	}
 
 	arg.ScalarType.Set(reflect.AppendSlice(arg.ScalarType, reflect.ValueOf(newvals)))
-	return err
+	return nil
 }
 
 func inflateUint(arg *expectedArg) error {
@@ -195,13 +207,25 @@ func inflateUint(arg *expectedArg) error {
 			err = inflateUint8slice(arg)
 		}
 	} else {
-		i, err = strconv.ParseUint(arg.Values[len(arg.Values)-1], 10, 64)
+		switch kind(arg.ScalarType) {
+		case reflect.Uint:
+			i, err = strconv.ParseUint(arg.Values[len(arg.Values)-1], 10, 64)
+		case reflect.Uint32:
+			i, err = strconv.ParseUint(arg.Values[len(arg.Values)-1], 10, 32)
+		case reflect.Uint64:
+			i, err = strconv.ParseUint(arg.Values[len(arg.Values)-1], 10, 64)
+		case reflect.Uint16:
+			i, err = strconv.ParseUint(arg.Values[len(arg.Values)-1], 10, 16)
+		case reflect.Uint8:
+			i, err = strconv.ParseUint(arg.Values[len(arg.Values)-1], 10, 8)
+		}
+
 		if err == nil {
 			arg.ScalarType.SetUint(i)
 		}
 	}
 
-	return generateError(err, arg, "uint")
+	return generateError(err, arg, kind(arg.ScalarType).String())
 }
 
 func inflateUintslice(arg *expectedArg) error {
@@ -211,14 +235,14 @@ func inflateUintslice(arg *expectedArg) error {
 
 	for _, v := range arg.Values {
 		if i, err = strconv.ParseUint(v, 10, 64); nil != err {
-			break
+			return err
 		}
 
 		newvals = append(newvals, uint(i))
 	}
 
 	arg.ScalarType.Set(reflect.AppendSlice(arg.ScalarType, reflect.ValueOf(newvals)))
-	return err
+	return nil
 }
 
 func inflateUint64slice(arg *expectedArg) error {
@@ -228,14 +252,14 @@ func inflateUint64slice(arg *expectedArg) error {
 
 	for _, v := range arg.Values {
 		if i, err = strconv.ParseUint(v, 10, 64); nil != err {
-			break
+			return err
 		}
 
 		newvals = append(newvals, uint64(i))
 	}
 
 	arg.ScalarType.Set(reflect.AppendSlice(arg.ScalarType, reflect.ValueOf(newvals)))
-	return err
+	return nil
 }
 
 func inflateUint32slice(arg *expectedArg) error {
@@ -245,14 +269,14 @@ func inflateUint32slice(arg *expectedArg) error {
 
 	for _, v := range arg.Values {
 		if i, err = strconv.ParseUint(v, 10, 32); nil != err {
-			break
+			return err
 		}
 
 		newvals = append(newvals, uint32(i))
 	}
 
 	arg.ScalarType.Set(reflect.AppendSlice(arg.ScalarType, reflect.ValueOf(newvals)))
-	return err
+	return nil
 }
 
 func inflateUint16slice(arg *expectedArg) error {
@@ -262,14 +286,14 @@ func inflateUint16slice(arg *expectedArg) error {
 
 	for _, v := range arg.Values {
 		if i, err = strconv.ParseUint(v, 10, 16); nil != err {
-			break
+			return err
 		}
 
 		newvals = append(newvals, uint16(i))
 	}
 
 	arg.ScalarType.Set(reflect.AppendSlice(arg.ScalarType, reflect.ValueOf(newvals)))
-	return err
+	return nil
 }
 
 func inflateUint8slice(arg *expectedArg) error {
@@ -279,14 +303,14 @@ func inflateUint8slice(arg *expectedArg) error {
 
 	for _, v := range arg.Values {
 		if i, err = strconv.ParseUint(v, 10, 8); nil != err {
-			break
+			return err
 		}
 
 		newvals = append(newvals, uint8(i))
 	}
 
 	arg.ScalarType.Set(reflect.AppendSlice(arg.ScalarType, reflect.ValueOf(newvals)))
-	return err
+	return nil
 }
 
 func inflateFloat(arg *expectedArg) error {
@@ -307,7 +331,7 @@ func inflateFloat(arg *expectedArg) error {
 		}
 	}
 
-	return generateError(err, arg, "float")
+	return generateError(err, arg, kind(arg.ScalarType).String())
 }
 
 func inflateFloat32slice(arg *expectedArg) error {
@@ -317,14 +341,14 @@ func inflateFloat32slice(arg *expectedArg) error {
 
 	for _, v := range arg.Values {
 		if i, err = strconv.ParseFloat(v, 32); nil != err {
-			break
+			return err
 		}
 
 		newvals = append(newvals, float32(i))
 	}
 
 	arg.ScalarType.Set(reflect.AppendSlice(arg.ScalarType, reflect.ValueOf(newvals)))
-	return err
+	return nil
 }
 
 func inflateFloat64slice(arg *expectedArg) error {
@@ -334,14 +358,14 @@ func inflateFloat64slice(arg *expectedArg) error {
 
 	for _, v := range arg.Values {
 		if i, err = strconv.ParseFloat(v, 64); nil != err {
-			break
+			return err
 		}
 
 		newvals = append(newvals, float64(i))
 	}
 
 	arg.ScalarType.Set(reflect.AppendSlice(arg.ScalarType, reflect.ValueOf(newvals)))
-	return err
+	return nil
 }
 
 func inflateBool(arg *expectedArg) error {
@@ -363,7 +387,7 @@ func inflateBool(arg *expectedArg) error {
 		}
 	}
 
-	return generateError(err, arg, "boolean")
+	return generateError(err, arg, kind(arg.ScalarType).String())
 }
 
 func generateError(err error, arg *expectedArg, typ string) error {

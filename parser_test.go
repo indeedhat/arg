@@ -6,7 +6,18 @@ import (
 	"testing"
 )
 
-var t_testData []string = []string{"--thing1=thing1", "-t=thing2", "position", "-tgroup", "val", "val=other", "--val=dthin=2"}
+var t_testData []string = []string{
+	"--thing1=thing1",
+	"-t=thing2",
+	"position",
+	"-tgroup",
+	"val",
+	"val=other",
+	"--val=dthin=2",
+	"-ttrue",
+	"-ffalse",
+	"-rr",
+}
 
 func TestParserTracksRawArgs(t *testing.T) {
 	p := NewParser()
@@ -34,6 +45,10 @@ func TestParserExtras(t *testing.T) {
 		{T_POSITIONAL, "val", "", 2},
 		{T_POSITIONAL, "val=other", "", 3},
 		{T_NAMED, "dthin=2", "val", 0},
+		{T_DASHED, "true", "t", 0},
+		{T_DASHED, "false", "f", 0},
+		{T_DASHED, "true", "r", 0},
+		{T_DASHED, "true", "r", 0},
 	}
 
 	p := NewParser()
@@ -43,6 +58,15 @@ func TestParserExtras(t *testing.T) {
 
 	if !reflect.DeepEqual(expected, p.extras) {
 		t.Error("Did not return the extra args it should have")
+		for _, p := range expected {
+			fmt.Printf("%+v\n", p)
+		}
+
 		fmt.Printf("%+v\n%+v", expected, p.extras)
+
+		for _, p := range p.extras {
+			fmt.Printf("%+v\n", p)
+		}
+
 	}
 }
