@@ -35,6 +35,13 @@ type expectedArg struct {
 	Validate ValidatorFunc
 }
 
+type commandArg struct {
+	Key string
+
+	Title string
+	Usage string
+}
+
 func (e *expectedArg) inflate() error {
 	var err error
 	switch kind(e.ScalarType) {

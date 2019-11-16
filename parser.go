@@ -17,6 +17,7 @@ type Parser struct {
 	itr     stringIterator
 
 	// parsed args
+	command    []*commandArg
 	positional []*expectedArg
 	named      []*expectedArg
 	extras     []*Argument
@@ -126,6 +127,16 @@ func (p *Parser) parseGroup() error {
 	}
 
 	return nil
+}
+
+func (p *Parser) addCommand(key string, meta *CommandConfig) {
+	cmd := commandArg{
+		Key:   key,
+		Usage: meta.Usage,
+		Title: meta.Title,
+	}
+
+	p.command = append(p.command, &cmd)
 }
 
 func (p *Parser) addUnexpectedArg(atype ArgType) {

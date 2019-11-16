@@ -8,6 +8,10 @@ func (p *Parser) Parse(args []string) error {
 	return p.parse(args)
 }
 
+func (p *Parser) Command(key string, config *CommandConfig) {
+	p.addCommand(key, config)
+}
+
 func (p *Parser) String(arg *string, keys string, config *ArgConfig) {
 	expected := p.addExpectedArg(keys, config)
 	expected.ScalarType = reflect.ValueOf(arg).Elem()

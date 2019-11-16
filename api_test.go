@@ -5,6 +5,27 @@ import (
 	"testing"
 )
 
+func TestApiCommand(t *testing.T) {
+	expected := []*commandArg{
+		{
+			Key:   "sub-command",
+			Usage: "this is a sub command",
+			Title: "My Sub Command",
+		},
+	}
+
+	parser := NewParser()
+
+	parser.Command("sub-command", &CommandConfig{
+		Title: "My Sub Command",
+		Usage: "this is a sub command",
+	})
+
+	if !reflect.DeepEqual(expected, parser.command) {
+		t.Fatal("Failed to add command")
+	}
+}
+
 func TestApiString(t *testing.T) {
 	args := []string{
 		"somestring",
@@ -207,19 +228,12 @@ func TestApiBadInt8Slice(t *testing.T) {
 	args := []string{
 		"1",
 		"--key=666",
-		"12",
+		"142",
 		"--key=94",
 	}
 
-	iExpected := []int8{
-		1,
-		12,
-	}
-
-	nExpected := []int8{
-		127,
-		94,
-	}
+	var iExpected []int8
+	var nExpected []int8
 
 	var indexed []int8
 	var named []int8
@@ -229,8 +243,8 @@ func TestApiBadInt8Slice(t *testing.T) {
 	parser.Int8s(&indexed, "", &ArgConfig{})
 	parser.Int8s(&named, "key", &ArgConfig{})
 
-	if err := parser.Parse(args); nil != err {
-		t.Fatal(err)
+	if err := parser.Parse(args); nil == err {
+		t.Fatal("parseed an invlid int8")
 	}
 
 	if !reflect.DeepEqual(iExpected, indexed) {
@@ -238,7 +252,7 @@ func TestApiBadInt8Slice(t *testing.T) {
 	}
 
 	if !reflect.DeepEqual(nExpected, named) {
-		t.Fatalf("failed to set indexed []int8: %v", named)
+		t.Fatalf("failed to set named []int8: %v", named)
 	}
 }
 
