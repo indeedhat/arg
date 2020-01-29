@@ -1,6 +1,8 @@
 # arg
 argument parsing lib
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/indeedhat/arg)](https://goreportcard.com/report/github.com/indeedhat/arg)
+
 Note: this is a work in progress and is not yet operational
 
 ## TODO
