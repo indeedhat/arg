@@ -3,6 +3,7 @@ argument parsing lib
 
 [![Actions Status](https://github.com/indeedhat/arg/workflows/Go/badge.svg)](https://github.com/indeedhat/arg/actions)
 [![Go Report Card](https://goreportcard.com/badge/github.com/indeedhat/arg)](https://goreportcard.com/report/github.com/indeedhat/arg)
+[![codecov](https://codecov.io/gh/indeedhat/arg/branch/master/graph/badge.svg)](https://codecov.io/gh/indeedhat/arg)
 
 Note: this is a work in progress and is not yet operational
 
